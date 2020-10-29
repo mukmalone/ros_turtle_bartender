@@ -1,0 +1,10 @@
+<launch>
+    <node name="turtlesim_node" pkg="turtlesim" type="turtlesim_node" />
+    <param name="/object_origin_x" type="double" value="5.0" />
+    <param name="/object_origin_y" type="double" value="8.0" />
+    <param name="/search_step_size" type="double" value="0.5" />
+    <node name="turtle_mark_target" pkg="ros_hideandseek" type="turtle_mark_target" />
+    <node name="turtle_color_search" pkg="ros_hideandseek" type="turtle_color_search" />
+    <node name="next_goal_server" pkg="ros_hideandseek" type="next_goal_server" />
+    <node name="turtle_move" pkg="ros_hideandseek" type="turtle_move" />
+</launch>
