@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(ros_hideandseek)
+project(ros_turtle_bartender)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -104,7 +104,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES ros_hideandseek
+#  LIBRARIES ros_turtle_bartender
 #  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS system_lib
 )
@@ -122,7 +122,7 @@ include_directories(
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/ros_hideandseek.cpp
+#   src/${PROJECT_NAME}/ros_turtle_bartender.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -133,7 +133,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/ros_hideandseek_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/ros_turtle_bartender_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -145,17 +145,11 @@ include_directories(
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_executable(turtle_color_search src/turtle_color_search.cpp)
-target_link_libraries(turtle_color_search ${catkin_LIBRARIES})
+add_executable(turtle_dance src/turtle_dance.cpp)
+target_link_libraries(turtle_dance ${catkin_LIBRARIES})
 
-add_executable(turtle_move src/turtle_move.cpp)
-target_link_libraries(turtle_move ${catkin_LIBRARIES})
-
-add_executable(turtle_mark_target src/turtle_mark_target.cpp)
-target_link_libraries(turtle_mark_target ${catkin_LIBRARIES})
-
-add_executable(next_goal_server src/next_goal_server.cpp)
-target_link_libraries(next_goal_server ${catkin_LIBRARIES})
+add_executable(random_goal_server src/random_goal_server.cpp)
+target_link_libraries(random_goal_server ${catkin_LIBRARIES})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
@@ -209,7 +203,7 @@ target_link_libraries(next_goal_server ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_ros_hideandseek.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_ros_turtle_bartender.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
