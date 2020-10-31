@@ -3,29 +3,21 @@
 #include <string>
 #include <turtlesim/Spawn.h>
 #include <turtlesim/SetPen.h>
-#include <geometry_msgs/Pose.h>
+#include <turtlesim/Pose.h>
 
 using namespace std;
+float x,y,theta;
 
 class Robot_Class
 {
-public:
-	int id;
-	int no_wheels;
+public:	
 	string robot_name;
-	geometry_msgs::Pose robot_pose;
-
-	//pose for turtle position in Go to Goal algorithm
-	ros::NodeHandle nh;
-    ros::Subscriber sub_pose = nh.subscribe(robot_name + "/pose", 1000, poseCallback);
 
 	void move_robot();
 
 	void stop_robot();
 
 	void spawn_robot(ros::NodeHandle n);
-
-	void poseCallback(const geometry_msgs::Pose::ConstPtr& msg);
 
 };
 
@@ -61,10 +53,12 @@ void Robot_Class::spawn_robot(ros::NodeHandle n)
 	cout<<"Robot spawned "<<robot_name<<endl;
 }
 
-void Robot_Class::poseCallback(const geometry_msgs::Pose::ConstPtr& msg)
+void poseCallback(const turtlesim::Pose::ConstPtr& msg)
 {
-	//float x = msg->x;
-	cout<<"x: "<<endl;
+    x = msg->x;
+    y = msg->y;
+    theta = msg->theta;
+	cout<<"x: "<<x<<endl;
 }
 
 
@@ -73,22 +67,34 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "turtle_dance", ros::init_options::AnonymousName);
     ros::NodeHandle n;
 
-    //wait for pen service and turn off pen
+    //wait for spawn service so we know turtlesim is up
     ros::service::waitForService("/spawn");
 	
-	Robot_Class robot_2;
+	//spawn all the party robots
+	int num_robots = 4;
+	Robot_Class robot[num_robots];
 
-	robot_2.id = 3;
-	robot_2.robot_name = "Humanoid_robot";
-	robot_2.spawn_robot(n);
-	
+	for(int i=0; i<num_robots; i++){
+		robot[i].robot_name = "Party_Turtle_" + to_string(i);
+		robot[i].spawn_robot(n);
+		robot[i].move_robot();
+		robot[i].stop_robot();
+	}	
 
-	cout<<"ID="<<robot_2.id<<"\t"<<"Robot Name"<<robot_2.robot_name<<endl;
+	//pose for each Pary_Turtle position in Go to Goal algorithm
+    ros::Subscriber sub_pose[num_robots];
+	for(int i=0; i<num_robots; i++){
+		sub_pose[i]= n.subscribe(robot[i].robot_name + "/pose", 1000, 
+			poseCallback);	
+	}
+	 
+	ros::Rate loop_rate(20);
 
-	robot_2.move_robot();
-	robot_2.stop_robot();
+	while (ros::ok())
+    {   
+		ros::spinOnce();
+        loop_rate.sleep();
+	}
 
 	return 0;
-
-
 }
