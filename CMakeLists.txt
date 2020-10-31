@@ -148,6 +148,9 @@ include_directories(
 add_executable(turtle_dance src/turtle_dance.cpp)
 target_link_libraries(turtle_dance ${catkin_LIBRARIES})
 
+add_executable(turtle_dance_class src/turtle_dance_class.cpp)
+target_link_libraries(turtle_dance_class ${catkin_LIBRARIES})
+
 add_executable(random_goal_server src/random_goal_server.cpp)
 target_link_libraries(random_goal_server ${catkin_LIBRARIES})
 
