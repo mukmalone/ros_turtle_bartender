@@ -8,16 +8,25 @@
 using namespace std;
 float x,y,theta;
 
-class Robot_Class
-{
-public:	
-	string robot_name;
+class Robot_Class {
+	public:	
+		Robot_Class() {
+			cout<<"Hello World"<<endl;
+			ros::NodeHandle n;
+			//pose for each Pary_Turtle position in Go to Goal algorithm
+			//ros::Subscriber sub_pose = n.subscribe<turtlesim::Pose>(robot_name + "/pose", 5, &Robot_Class::poseCallback, this);		
+		}
+		string robot_name;
 
-	void move_robot();
+		void move_robot();
 
-	void stop_robot();
+		void stop_robot();
 
-	void spawn_robot(ros::NodeHandle n);
+		ros::NodeHandle n;
+
+		void spawn_robot(ros::NodeHandle n);
+
+		void poseCallback(const turtlesim::Pose::ConstPtr& msg);
 
 };
 
@@ -49,18 +58,17 @@ void Robot_Class::spawn_robot(ros::NodeHandle n)
     pen_state.request.off = 1;    
     ros::ServiceClient pen = n.serviceClient<turtlesim::SetPen>("/" + robot_name + "/set_pen");
     pen.call(pen_state);
-
+	ros::Subscriber sub_pose = n.subscribe<turtlesim::Pose>(robot_name + "/pose", 5, &Robot_Class::poseCallback, this);		
 	cout<<"Robot spawned "<<robot_name<<endl;
 }
 
-void poseCallback(const turtlesim::Pose::ConstPtr& msg)
+void Robot_Class::poseCallback(const turtlesim::Pose::ConstPtr& msg)
 {
     x = msg->x;
     y = msg->y;
     theta = msg->theta;
 	cout<<"x: "<<x<<endl;
 }
-
 
 int main(int argc, char **argv)
 {
@@ -79,14 +87,7 @@ int main(int argc, char **argv)
 		robot[i].spawn_robot(n);
 		robot[i].move_robot();
 		robot[i].stop_robot();
-	}	
-
-	//pose for each Pary_Turtle position in Go to Goal algorithm
-    ros::Subscriber sub_pose[num_robots];
-	for(int i=0; i<num_robots; i++){
-		sub_pose[i]= n.subscribe(robot[i].robot_name + "/pose", 1000, 
-			poseCallback);	
-	}
+	}		
 	 
 	ros::Rate loop_rate(20);
 
