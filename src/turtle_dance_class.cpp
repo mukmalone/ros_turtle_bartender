@@ -12,7 +12,7 @@ class Robot_Class {
 	public:	
 		Robot_Class() {
 			cout<<"Hello World"<<endl;
-			ros::NodeHandle n;
+
 			//pose for each Pary_Turtle position in Go to Goal algorithm
 			//ros::Subscriber sub_pose = n.subscribe<turtlesim::Pose>(robot_name + "/pose", 5, &Robot_Class::poseCallback, this);		
 		}
@@ -23,6 +23,8 @@ class Robot_Class {
 		void stop_robot();
 
 		ros::NodeHandle n;
+
+		ros::Subscriber sub_pose;
 
 		void spawn_robot(ros::NodeHandle n);
 
@@ -58,7 +60,8 @@ void Robot_Class::spawn_robot(ros::NodeHandle n)
     pen_state.request.off = 1;    
     ros::ServiceClient pen = n.serviceClient<turtlesim::SetPen>("/" + robot_name + "/set_pen");
     pen.call(pen_state);
-	ros::Subscriber sub_pose = n.subscribe<turtlesim::Pose>(robot_name + "/pose", 5, &Robot_Class::poseCallback, this);		
+
+	sub_pose = n.subscribe<turtlesim::Pose>("/" + robot_name + "/pose", 5, &Robot_Class::poseCallback, this);		
 	cout<<"Robot spawned "<<robot_name<<endl;
 }
 
@@ -67,7 +70,8 @@ void Robot_Class::poseCallback(const turtlesim::Pose::ConstPtr& msg)
     x = msg->x;
     y = msg->y;
     theta = msg->theta;
-	cout<<"x: "<<x<<endl;
+	cout<<"hello this is pose callback for: "<<robot_name<<endl;
+	//cout<<"x: "<<x<<endl;
 }
 
 int main(int argc, char **argv)
@@ -85,8 +89,8 @@ int main(int argc, char **argv)
 	for(int i=0; i<num_robots; i++){
 		robot[i].robot_name = "Party_Turtle_" + to_string(i);
 		robot[i].spawn_robot(n);
-		robot[i].move_robot();
-		robot[i].stop_robot();
+		//robot[i].move_robot();
+		//robot[i].stop_robot();
 	}		
 	 
 	ros::Rate loop_rate(20);
