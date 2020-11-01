@@ -1,4 +1,7 @@
 #include <ros/ros.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_ros/transform_broadcaster.h>
+#include <geometry_msgs/TransformStamped.h>
 #include <iostream>
 #include <string>
 #include <turtlesim/Spawn.h>
@@ -13,22 +16,16 @@ const float pi = 3.14159265358979323846;
 
 class Robot_Class {
 	public:	
-		Robot_Class() {
-			cout<<"Hello World"<<endl;
-		}
-
 		string robot_name;
 		ros::NodeHandle n;
 		ros::Subscriber subscriber_pose;
 		turtlesim::Pose pose;
     	ros::Publisher cmd_vel;    
-		geometry_msgs::Twist control_command;
+		geometry_msgs::Twist control_command;		
 		float goal_x;
 		float goal_y;
 
 		void move_robot();
-
-		void stop_robot();
 
 		void spawn_robot();
 
@@ -68,12 +65,6 @@ void Robot_Class::move_robot()
 	cmd_vel.publish(control_command);
 }
 
-void Robot_Class::stop_robot()
-{
-
-	cout<<"Stopping Robot"<<endl;
-}
-
 void Robot_Class::spawn_robot()
 {
 	//This class will spawn the turtle and turn-off the pen
@@ -102,9 +93,29 @@ void Robot_Class::spawn_robot()
 
 void Robot_Class::poseCallback(const turtlesim::Pose::ConstPtr& msg)
 {
+	//populate pose for movement
     pose.x=msg->x;
 	pose.y=msg->y;
 	pose.theta=msg->theta;
+
+	//broadcast TF
+    static tf2_ros::TransformBroadcaster br;
+	geometry_msgs::TransformStamped transformStamped;
+
+    transformStamped.header.stamp = ros::Time::now();
+    transformStamped.header.frame_id = "world";
+    transformStamped.child_frame_id = robot_name;
+	transformStamped.transform.translation.x = msg->x;
+	transformStamped.transform.translation.y = msg->y;
+	transformStamped.transform.translation.z = 0.0;
+	tf2::Quaternion q;
+	q.setRPY(0, 0, msg->theta);
+	transformStamped.transform.rotation.x = q.x();
+	transformStamped.transform.rotation.y = q.y();
+	transformStamped.transform.rotation.z = q.z();
+	transformStamped.transform.rotation.w = q.w();
+
+	br.sendTransform(transformStamped);
 }
 
 void Robot_Class::get_goal()
@@ -135,7 +146,7 @@ bool Robot_Class::robot_at_goal()
 
 int main(int argc, char **argv)
 {
-	ros::init(argc, argv, "turtle_dance", ros::init_options::AnonymousName);
+	ros::init(argc, argv, "turtle_dance_party", ros::init_options::AnonymousName);
     ros::NodeHandle n;
 
     //wait for spawn service so we know turtlesim is up

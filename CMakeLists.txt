@@ -12,6 +12,9 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   message_generation
+  tf2
+  tf2_ros
+  tf2_geometry_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -145,11 +148,11 @@ include_directories(
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
-add_executable(turtle_dance src/turtle_dance.cpp)
-target_link_libraries(turtle_dance ${catkin_LIBRARIES})
+add_executable(turtle_bartender src/turtle_bartender.cpp)
+target_link_libraries(turtle_bartender ${catkin_LIBRARIES})
 
-add_executable(turtle_dance_class src/turtle_dance_class.cpp)
-target_link_libraries(turtle_dance_class ${catkin_LIBRARIES})
+add_executable(turtle_dance_party src/turtle_dance_party.cpp)
+target_link_libraries(turtle_dance_party ${catkin_LIBRARIES})
 
 add_executable(random_goal_server src/random_goal_server.cpp)
 target_link_libraries(random_goal_server ${catkin_LIBRARIES})

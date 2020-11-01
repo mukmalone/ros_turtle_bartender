@@ -18,7 +18,7 @@ void poseCallback(const turtlesim::Pose::ConstPtr& msg)
 int main(int argc, char **argv)
 {
     
-    ros::init(argc, argv, "turtle_dance", ros::init_options::AnonymousName);
+    ros::init(argc, argv, "turtle_bartender", ros::init_options::AnonymousName);
  
     ros::NodeHandle n;
 
@@ -81,7 +81,7 @@ int main(int argc, char **argv)
             adaptive_control=abs(control_command.angular.z);
         }
         //linear velocity
-        control_command.linear.x = .5/adaptive_control* sqrt( pow(goal_x-x,2) + pow(goal_y-y,2) );
+        control_command.linear.x = 2/adaptive_control* sqrt( pow(goal_x-x,2) + pow(goal_y-y,2) );
 
         control_pub.publish(control_command);
         ros::spinOnce();

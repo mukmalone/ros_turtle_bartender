@@ -4,8 +4,8 @@
 bool calc_next_goal(ros_turtle_bartender::NextGoal::Request &req,
                     ros_turtle_bartender::NextGoal::Response &res)
 {
-    res.x = 11.0 * rand() / (float)RAND_MAX;
-    res.y = 11.0 * rand() / (float)RAND_MAX;
+    res.x = 10.0 * rand() / (float)RAND_MAX;
+    res.y = 10.0 * rand() / (float)RAND_MAX;
     res.complete=false;
     
     ROS_INFO("new_x: %f new_y:%f", res.x, res.y);
