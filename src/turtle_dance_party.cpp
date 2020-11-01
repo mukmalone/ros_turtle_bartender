@@ -153,7 +153,7 @@ int main(int argc, char **argv)
     ros::service::waitForService("/spawn");
 	
 	//spawn all the party robots
-	int num_robots = 14;
+	int num_robots = 4;
 	Robot_Class robot[num_robots];
 
 	//spawn all the party turtles and initiate their first dance
@@ -162,10 +162,6 @@ int main(int argc, char **argv)
 		robot[i].spawn_robot();
 		robot[i].get_goal();
 	}		
-
-	bool test = robot[0].robot_at_goal();
-
-	cout<<to_string(test)<<endl;
 
 	ros::Rate loop_rate(20);
 
