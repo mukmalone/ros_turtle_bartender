@@ -10,10 +10,18 @@
 #include <geometry_msgs/Twist.h>
 #include <ros_turtle_bartender/NextGoal.h>
 #include <turtlesim/Kill.h>
+#include <ros_turtle_bartender/DrinkOrder.h>
+#include <std_msgs/Int64.h>
 
 using namespace std;
 
 const float pi = 3.14159265358979323846;
+int num_cust;
+
+void numCustCallback(const std_msgs::Int64::ConstPtr& msg)
+{
+    num_cust = msg->data;
+}
 
 class Robot_Class {
 	public:	
@@ -23,48 +31,16 @@ class Robot_Class {
 		turtlesim::Pose pose;
     	ros::Publisher cmd_vel;    
 		geometry_msgs::Twist control_command;		
-		float goal_x;
-		float goal_y;
-
-		void move_robot();
+		string customer;
+		string drink;
 
 		void spawn_robot();
 
 		void poseCallback(const turtlesim::Pose::ConstPtr& msg);
 
-		void get_goal();
-
-		bool robot_at_goal();
+		void get_order(int num_customers);
 
 };
-
-void Robot_Class::move_robot()
-{
-	float angle = atan2(goal_y-pose.y, goal_x-pose.x) - pose.theta;
-    //ensure angle is between -pi and pi
-    if (angle<-pi){
-        angle+=2*pi;
-    }
-    else if (angle>pi){
-        angle-=2*pi;
-    }
-
-	//angular velocity
-	control_command.angular.z = 5 * (angle); 
-	float adaptive_control=1.0;
-
-	//control to enable sharp turns and staighter paths
-	if(abs(control_command.angular.z)<.5){
-		adaptive_control=.5;
-	} else {
-		adaptive_control=abs(control_command.angular.z);
-	}
-
-	//linear velocity
-	control_command.linear.x = 2/adaptive_control* sqrt( pow(goal_x-pose.x,2) + pow(goal_y-pose.y,2) );
-
-	cmd_vel.publish(control_command);
-}
 
 void Robot_Class::spawn_robot()
 {
@@ -119,31 +95,15 @@ void Robot_Class::poseCallback(const turtlesim::Pose::ConstPtr& msg)
 	br.sendTransform(transformStamped);
 }
 
-void Robot_Class::get_goal()
+void Robot_Class::get_order(int num_customers)
 {
-	ros::ServiceClient goalClient = n.serviceClient<ros_turtle_bartender::NextGoal>("/next_goal");
-    ros_turtle_bartender::NextGoal nextGoal;  
-	nextGoal.request.x=pose.x;
-    nextGoal.request.y=pose.y;
-    nextGoal.request.theta=pose.theta;
-    goalClient.call(nextGoal);
-	goal_x=nextGoal.response.x;
-	goal_y=nextGoal.response.y;
+	ros::ServiceClient orderClient = n.serviceClient<ros_turtle_bartender::DrinkOrder>("/next_order");
+    ros_turtle_bartender::DrinkOrder nextOrder;  
+	nextOrder.request.num_customers=num_customers;    
+    orderClient.call(nextOrder);
+	customer=nextOrder.response.customer;
+	drink=nextOrder.response.drink;
     
-}
-
-bool Robot_Class::robot_at_goal()
-{
-	//check if we are at the goal within tolerance
-    float dx, dy, tolerance=0.1;
-    dx = abs(pose.x-goal_x);
-    dy = abs(pose.y-goal_y);
-	if(dx<=tolerance && dy<=tolerance){
-        //if we are at the goal move to next goal
-        return true;
-    } else {
-		return false;
-	}
 }
 
 int main(int argc, char **argv)
@@ -159,7 +119,6 @@ int main(int argc, char **argv)
 	
 	robot.robot_name = "turtle_bartender";	
     robot.spawn_robot();
-	//robot.get_goal();
 
     //kill turtle1 the default turtle
     turtlesim::Kill turtle_to_kill;    
@@ -173,62 +132,89 @@ int main(int argc, char **argv)
 
 	ros::Publisher turtle_vel = 
 		n.advertise<geometry_msgs::Twist>(robot.robot_name+"/cmd_vel",10);
+	
+	ros::Subscriber num_customers = n.subscribe("num_party_turtles", 100, numCustCallback);
 			
 	ros::Rate loop_rate(20);
 
+	bool drink_picked = false;
+	string robot_destination;
+	bool subscribed_TF = false;
+	bool first_run = true;
+
 	while (ros::ok())
     {   
+		if(num_cust>0 && !first_run) {
 
-		//cycle through each party turtle.  if it is at the goal, get a new one
-		//if it is not, keep moving towards the goal
-
-        string robot_customer = "Vodka";
-        geometry_msgs::TransformStamped transformStamped;
-        try{
-            transformStamped = tfBuffer.lookupTransform(robot.robot_name,robot_customer,
-                                ros::Time(0));
-        }
-        catch (tf2::TransformException &ex) {
-            ROS_WARN("%s",ex.what());
-            //ros::Duration(1.0).sleep();
-            //continue;
-        }
-
-		geometry_msgs::Twist vel_msg;
-
-		float dist_customer = sqrt(pow(transformStamped.transform.translation.y, 2) +
-								pow(transformStamped.transform.translation.x, 2));
-		
-		if(dist_customer > 0.1) {
-			float adaptive_control=1.0;
-			//ensure angle is between -pi and pi
-			float angle = atan2(transformStamped.transform.translation.y,
-											transformStamped.transform.translation.x);
-			if (angle<-pi){
-				angle+=2*pi;
-			}
-			else if (angle>pi){
-				angle-=2*pi;
-			}
-			vel_msg.angular.z = 5.0 * angle;
-			//control to enable sharp turns and staighter paths
-			if(abs(vel_msg.angular.z)<.5){
-				adaptive_control=.5;
+			if(drink_picked) {
+				//we need to bring to the customer
+				robot_destination = robot.customer;
 			} else {
-				adaptive_control=abs(vel_msg.angular.z);
+				//we need to get the drink from proper drink counter
+				robot_destination = robot.drink;
 			}
 			
-			vel_msg.linear.x = 2/adaptive_control * sqrt(pow(transformStamped.transform.translation.x,2) +
-										pow(transformStamped.transform.translation.y,2));
-			turtle_vel.publish(vel_msg);
-		} else {
-			vel_msg.angular.z = 0;
-			vel_msg.linear.x = 0;
-			turtle_vel.publish(vel_msg);
+			geometry_msgs::TransformStamped transformStamped;
+			try{
+				transformStamped = tfBuffer.lookupTransform(robot.robot_name,robot_destination,
+									ros::Time(0));
+				subscribed_TF=true;
+			}
+			catch (tf2::TransformException &ex) {
+				ROS_WARN("%s",ex.what());
+				subscribed_TF=false;
+			}
+
+			geometry_msgs::Twist vel_msg;
+
+			float dist_customer = sqrt(pow(transformStamped.transform.translation.y, 2) +
+									pow(transformStamped.transform.translation.x, 2));
+			
+			if(dist_customer > 0.1) {
+				float adaptive_control=1.0;
+				//ensure angle is between -pi and pi
+				float angle = atan2(transformStamped.transform.translation.y,
+												transformStamped.transform.translation.x);
+				if (angle<-pi){
+					angle+=2*pi;
+				}
+				else if (angle>pi){
+					angle-=2*pi;
+				}
+				vel_msg.angular.z = 5.0 * angle;
+				//control to enable sharp turns and staighter paths
+				if(abs(vel_msg.angular.z)<.5){
+					adaptive_control=.5;
+				} else {
+					adaptive_control=abs(vel_msg.angular.z);
+				}
+				
+				vel_msg.linear.x = 2/adaptive_control * sqrt(pow(transformStamped.transform.translation.x,2) +
+											pow(transformStamped.transform.translation.y,2));
+				turtle_vel.publish(vel_msg);
+
+			} else {
+
+				vel_msg.angular.z = 0;
+				vel_msg.linear.x = 0;
+				turtle_vel.publish(vel_msg);
+				if(!drink_picked && subscribed_TF) {
+					//signalling we have the drink
+					drink_picked = true;
+				} else {
+					//signalling we delivered the drink
+					robot.get_order(num_cust);
+					drink_picked = false;
+				}
+				
+			} 
+		} else if(num_cust>0 && first_run) {
+			robot.get_order(num_cust);
+			first_run=false;
 		}
 		ros::spinOnce();
         loop_rate.sleep();
-
+		
 	}
 
 	return 0;

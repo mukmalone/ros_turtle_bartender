@@ -9,6 +9,7 @@
 #include <turtlesim/Pose.h>
 #include <geometry_msgs/Twist.h>
 #include <ros_turtle_bartender/NextGoal.h>
+#include <std_msgs/Int64.h>
 
 using namespace std;
 
@@ -151,10 +152,15 @@ int main(int argc, char **argv)
 
     //wait for spawn service so we know turtlesim is up
     ros::service::waitForService("/spawn");
-	
+
+	//publish the number of Party Turtles
+	ros::Publisher party_pub = n.advertise<std_msgs::Int64>("num_party_turtles", 10);
+	std_msgs::Int64 num;
+  
 	//spawn all the party robots
 	int num_robots = 4;
 	Robot_Class robot[num_robots];
+	num.data = num_robots;
 
 	//spawn all the party turtles and initiate their first dance
 	for(int i=0; i<num_robots; i++){
@@ -176,7 +182,7 @@ int main(int argc, char **argv)
 				robot[i].get_goal();
 			}
 		}
-
+		party_pub.publish(num);
 		ros::spinOnce();
         loop_rate.sleep();
 	}

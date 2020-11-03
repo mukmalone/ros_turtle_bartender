@@ -25,26 +25,26 @@ int main(int argc, char** argv){
         {
             case (int)0:
                 drink_name = "Red Wine";
-                drink_x = 0.5;
-                drink_y = 0.5;
+                drink_x = 1.0;
+                drink_y = 1.0;
                 theta = -pi*3/4;
                 break;
             case (int)1:
                 drink_name = "White Wine";
-                drink_x = 10.5;
-                drink_y = 0.5;
+                drink_x = 10.0;
+                drink_y = 1.0;
                 theta = -pi/4;
                 break;
             case (int)2:
                 drink_name = "Vodka";
-                drink_x = 0.5;
-                drink_y = 10.5;
+                drink_x = 1.0;
+                drink_y = 10.0;
                 theta = pi*3/4;
                 break;
             case (int)3:
                 drink_name = "Jamison";
-                drink_x = 10.5;
-                drink_y = 10.5;
+                drink_x = 10.0;
+                drink_y = 10.0;
                 theta = pi/4;
                 break;
             default:

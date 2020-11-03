@@ -61,6 +61,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_service_files(
   FILES
   NextGoal.srv
+  DrinkOrder.srv
 )
 
 ## Generate actions in the 'action' folder
@@ -159,6 +160,9 @@ target_link_libraries(random_goal_server ${catkin_LIBRARIES})
 
 add_executable(drink_location_broadcaster src/drink_location_broadcaster.cpp)
 target_link_libraries(drink_location_broadcaster ${catkin_LIBRARIES})
+
+add_executable(drink_order_server src/drink_order_server.cpp)
+target_link_libraries(drink_order_server ${catkin_LIBRARIES})
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
