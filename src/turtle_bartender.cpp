@@ -183,10 +183,10 @@ int main(int argc, char **argv)
 		//cycle through each party turtle.  if it is at the goal, get a new one
 		//if it is not, keep moving towards the goal
 
-        string robot_customer = "Vodka";
+        string robot_customer = "Party_Turtle_1";
         geometry_msgs::TransformStamped transformStamped;
         try{
-            transformStamped = tfBuffer.lookupTransform(robot.robot_name, robot_customer,
+            transformStamped = tfBuffer.lookupTransform(robot.robot_name,robot_customer,
                                 ros::Time(0));
         }
         catch (tf2::TransformException &ex) {
