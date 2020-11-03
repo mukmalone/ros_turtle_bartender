@@ -11,7 +11,7 @@ int main(int argc, char** argv){
     ros::NodeHandle n;
     static tf2_ros::TransformBroadcaster br;
 	geometry_msgs::TransformStamped transformStamped;
-    ros::Rate loop_rate(5);
+    ros::Rate loop_rate(20);
 
     int cnt = 0;
     string drink_name;
@@ -25,27 +25,27 @@ int main(int argc, char** argv){
         {
             case (int)0:
                 drink_name = "Red Wine";
-                drink_x = 1.0;
-                drink_y = 1.0;
-                theta = 0;
+                drink_x = 0.5;
+                drink_y = 0.5;
+                theta = -pi*3/4;
                 break;
             case (int)1:
                 drink_name = "White Wine";
-                drink_x = 9.0;
-                drink_y = 1.0;
-                theta = 0;
+                drink_x = 10.5;
+                drink_y = 0.5;
+                theta = -pi/4;
                 break;
             case (int)2:
                 drink_name = "Vodka";
-                drink_x = 1.0;
-                drink_y = 9.0;
-                theta = 0;
+                drink_x = 0.5;
+                drink_y = 10.5;
+                theta = pi*3/4;
                 break;
             case (int)3:
                 drink_name = "Jamison";
-                drink_x = 9.0;
-                drink_y = 9.0;
-                theta = 0;
+                drink_x = 10.5;
+                drink_y = 10.5;
+                theta = pi/4;
                 break;
             default:
                 break;
