@@ -157,6 +157,9 @@ target_link_libraries(turtle_dance_party ${catkin_LIBRARIES})
 add_executable(random_goal_server src/random_goal_server.cpp)
 target_link_libraries(random_goal_server ${catkin_LIBRARIES})
 
+add_executable(drink_location_broadcaster src/drink_location_broadcaster.cpp)
+target_link_libraries(drink_location_broadcaster ${catkin_LIBRARIES})
+
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}

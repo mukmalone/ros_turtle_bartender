@@ -70,8 +70,8 @@ void Robot_Class::spawn_robot()
 {
 	//This class will spawn the turtle and turn-off the pen
 	turtlesim::Spawn turtle;    
-    turtle.request.x = 11.0 * rand() / (float)RAND_MAX;
-	turtle.request.y = 11.0 * rand() / (float)RAND_MAX;
+    turtle.request.x = 9.0 * rand() / (float)RAND_MAX;
+	turtle.request.y = 9.0 * rand() / (float)RAND_MAX;
 	turtle.request.theta = 3.14 * rand() / (float)RAND_MAX;
 	turtle.request.name = robot_name;
     ros::ServiceClient spawn_turtle = n.serviceClient<turtlesim::Spawn>("/spawn");
@@ -170,6 +170,9 @@ int main(int argc, char **argv)
     //setup TF listening
     tf2_ros::Buffer tfBuffer;
     tf2_ros::TransformListener tfListener(tfBuffer);
+
+	ros::Publisher turtle_vel = 
+		n.advertise<geometry_msgs::Twist>(robot.robot_name+"/cmd_vel",10);
 			
 	ros::Rate loop_rate(20);
     bool first_run = true;
@@ -179,21 +182,8 @@ int main(int argc, char **argv)
 
 		//cycle through each party turtle.  if it is at the goal, get a new one
 		//if it is not, keep moving towards the goal
-		ros::spinOnce();
-        loop_rate.sleep();
 
-        if(first_run){
-            robot.get_goal();
-            first_run = false;
-        }
-		
-        if(!robot.robot_at_goal()){
-            robot.move_robot();
-        } else {
-            robot.get_goal();
-        }
-		
-        string robot_customer = "Party_Turtle_0";
+        string robot_customer = "Vodka";
         geometry_msgs::TransformStamped transformStamped;
         try{
             transformStamped = tfBuffer.lookupTransform(robot.robot_name, robot_customer,
@@ -204,6 +194,25 @@ int main(int argc, char **argv)
             //ros::Duration(1.0).sleep();
             //continue;
         }
+
+		geometry_msgs::Twist vel_msg;
+
+		float dist_customer = sqrt(pow(transformStamped.transform.translation.y, 2) +
+								pow(transformStamped.transform.translation.x, 2));
+		
+		if(dist_customer > 0.1) {
+			vel_msg.angular.z = 4.0 * atan2(transformStamped.transform.translation.y,
+											transformStamped.transform.translation.x);
+			vel_msg.linear.x = 2.5 * sqrt(pow(transformStamped.transform.translation.x,2) +
+										pow(transformStamped.transform.translation.y,2));
+			turtle_vel.publish(vel_msg);
+		} else {
+			vel_msg.angular.z = 0;
+			vel_msg.linear.x = 0;
+			turtle_vel.publish(vel_msg);
+		}
+		ros::spinOnce();
+        loop_rate.sleep();
 
 	}
 
