@@ -239,4 +239,4 @@ _Pvt_Extensions
 out/
 
 # node modules
-webserver/node_modules
+webserver/node_modules/
