@@ -7,4 +7,5 @@
     <node name="turtle_dance_party" pkg="ros_turtle_bartender" type="turtle_dance_party" />
     <node name="drink_location_broadcaster" pkg="ros_turtle_bartender" type="drink_location_broadcaster" />
     <node name="drink_order_server" pkg="ros_turtle_bartender" type="drink_order_server" />
+    <node name="turtle_bartender" pkg="ros_turtle_bartender" type="turtle_bartender" />
 </launch>
