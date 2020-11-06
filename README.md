@@ -17,6 +17,10 @@ I created this game to practice using the ROS TF2 funcitionality.  The tf2 maint
 
 ![image info](./pictures/HideandSeek.gif)
 
+Here is rqt graph of the tf frames being broadcast.
+
+![image info](./pictures/tf2_frames.png)
+
 Here on YouTube I quickly go through running the game and the code.
 
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/a16sIjR4Cco/0.jpg)](http://www.youtube.com/watch?v=a16sIjR4Cco "Learning ROS through programming - Turtlesim Hide and Seek")
