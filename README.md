@@ -33,13 +33,15 @@ Then build the workspace with `catkin_make`.
 
 In the `ros_turtle_bartender` directory using the `terminal` enter the `webserver` directory.
 
-Run `node init` command to grab all of the node_modules required.  If you do not have nodjs install you can do so by using the command:
+Using the terminal when inside the `~/webserver` directory run `npm install` command to grab all of the node_modules required.  
+
+If you do not have nodjs install you can do so by using the command:
 
 `# Using Ubuntu
 curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
 sudo apt-get install -y nodejs`
 
-To start the webserver in the terminal use the command: `node server.js` 
+To start the webserver in the terminal use the command: `npm start` 
 
 Finally start the package using roslaunch command: `roslaunch ros_turtle_bartender turtle_bartender.launch`
 
