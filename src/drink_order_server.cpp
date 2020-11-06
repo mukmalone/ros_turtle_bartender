@@ -20,29 +20,22 @@ bool get_next_order(ros_turtle_bartender::DrinkOrder::Request &req,
     CURLcode res_curl;
     string readBuffer;
     string delimiter = ",";
-    string strArguments = "name=daniel&project=curl";
-    const char *data = "data";;
-    
+        
     curl = curl_easy_init();
     
     if(curl) {
-        curl_easy_setopt(curl, CURLOPT_POST, 1L);
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, 12L);
-        
-        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, data);
-        curl_easy_setopt(curl, CURLOPT_URL, "http://localhost:3000");
+        string url = "http://localhost:3000?num=" + to_string(req.num_customers);
+        curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
         res_curl = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
 
         res.customer = readBuffer.substr(0, readBuffer.find(delimiter));
-        res.drink = readBuffer.substr(readBuffer.find(delimiter), readBuffer.length());
+        res.drink = readBuffer.substr(readBuffer.find(delimiter)+1, readBuffer.length());
     }
     
-    res.drink = "Red Wine";
-    
-    cout<<"Customer: "<<res.customer<<"Drink: "<<res.drink<<endl;
+    cout<<"Customer: "<<res.customer<<" Drink: "<<res.drink<<endl;
     return true;
 }
 
