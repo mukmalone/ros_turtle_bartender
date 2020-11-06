@@ -1,14 +1,20 @@
+//Author: Michael Muldoon
+//email: michael.muldoon.home@gmail.com
+//license: Apache 2.0
+//Comment: This node is the bartender control.  When a new order is received
+//from the drink_order_server the bartender moves to the location of the drink
+//broad cast in the TF and then the Party Turtle at the location broadcast
+//in the TF.  When completed it requests a new order.
+
 #include <ros/ros.h>
 #include <tf2_ros/transform_listener.h>
 #include <tf2_ros/transform_broadcaster.h>
 #include <geometry_msgs/TransformStamped.h>
-#include <iostream>
 #include <string>
 #include <turtlesim/Spawn.h>
 #include <turtlesim/SetPen.h>
 #include <turtlesim/Pose.h>
 #include <geometry_msgs/Twist.h>
-#include <ros_turtle_bartender/NextGoal.h>
 #include <turtlesim/Kill.h>
 #include <ros_turtle_bartender/DrinkOrder.h>
 #include <std_msgs/Int64.h>

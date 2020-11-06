@@ -1,3 +1,9 @@
+//Author: Michael Muldoon
+//email: michael.muldoon.home@gmail.com
+//license: Apache 2.0
+//Comment: This is a Node js Express webserver serving up random customers
+// and drink orders for the turtle party of the year
+
 const express = require('express')
 const app = express()
 const port = 3000

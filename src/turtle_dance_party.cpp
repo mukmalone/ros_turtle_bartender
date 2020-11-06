@@ -1,8 +1,13 @@
+//Author: Michael Muldoon
+//email: michael.muldoon.home@gmail.com
+//license: Apache 2.0
+//Comment: This node setups all the Party turtles and moves them
+// around the party.  It broadcasts to the TF the position of each.
+
 #include <ros/ros.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_ros/transform_broadcaster.h>
 #include <geometry_msgs/TransformStamped.h>
-#include <iostream>
 #include <string>
 #include <turtlesim/Spawn.h>
 #include <turtlesim/SetPen.h>
@@ -158,7 +163,7 @@ int main(int argc, char **argv)
 	std_msgs::Int64 num;
   
 	//spawn all the party robots
-	int num_robots = 4;
+	int num_robots = 8;
 	Robot_Class robot[num_robots];
 	num.data = num_robots;
 

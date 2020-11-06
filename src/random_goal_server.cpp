@@ -1,3 +1,9 @@
+//Author: Michael Muldoon
+//email: michael.muldoon.home@gmail.com
+//license: Apache 2.0
+//Comment: This node is a service server giving the Party Turtles
+// some random dance moves
+
 #include <ros/ros.h>
 #include <ros_turtle_bartender/NextGoal.h>
 

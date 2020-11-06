@@ -1,8 +1,12 @@
+//Author: Michael Muldoon
+//email: michael.muldoon.home@gmail.com
+//license: Apache 2.0
+//Comment: This node is a service server connecting to webserver to get the next
+// order for the turtle bartender to fullfill
+
 #include <ros/ros.h>
 #include <ros_turtle_bartender/DrinkOrder.h>
-#include <stdio.h>
 #include <curl/curl.h>
-#include <iostream>
 #include <string>
 
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
