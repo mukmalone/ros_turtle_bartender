@@ -15,7 +15,7 @@ I created this game to practice using the ROS TF2 funcitionality.  The tf2 maint
 - The webserver will simply randomly choose the drink and customer to deliver.
 
 
-![image info](./pictures/HideandSeek.gif)
+![image info](./pictures/turtle_bartender.gif)
 
 Here is rqt graph of the tf frames being broadcast.
 
