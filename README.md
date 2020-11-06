@@ -1,6 +1,6 @@
 # Turtle bartender app in ROS #
 
-This repository hosts the source code for the ROS < ros_turtle_bartender > package which setups a turtle party and a bartender who takes drink orders from a webserver and delivers drinks to happy customers.
+This repository hosts the source code for the ROS < ros_turtle_bartender > package which setups a turtle party and a bartender who takes drink orders from a webserver and delivers drinks to turtle customers and contributing to their good time.
 
 I created this game to practice using the ROS TF2 funcitionality.  The tf2 maintains the relationship between coordinate frames in a tree structure buffered in time, and allowed the bartender to find where the `drink stands` are located to pick up the correct drink and where the `customers` where located to deliver the drinks.
 
