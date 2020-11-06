@@ -35,16 +35,15 @@ Run `node init` command to grab all of the node_modules required.  If you do not
 curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
 sudo apt-get install -y nodejs`
 
-Finally start the package using roslaunch command: `roslaunch ros_hideandseek hideandseek.launch`
+To start the webserver in the terminal use the command: `node server.js` 
 
-To change the starting location of the ball and search density edit the hideandseek.launch file using the following parameters:
-- `<param name="/object_origin_x" type="double" value="5.0" />`
-- `<param name="/object_origin_y" type="double" value="8.0" />`
-- `<param name="/search_step_size" type="double" value="0.5" />`
+Finally start the package using roslaunch command: `roslaunch ros_turtle_bartender turtle_bartender.launch`
 
 ## Node descriptions ##
 
 Below is a picture of the rqt_graph outlining the nodes and the topics they use for communication.  Here is a brief description of each node moving from left to right in the rqt_graph.
+
+![image info](./pictures/rosgraph.png)
 
 ### /next_goal_server ###
 - this node is the server for the NextGoal service which calculates the next goal for the turtlesim robot to drive towards as it searches for the ball.  When the next goal is outside of the turtlesim environment it sends a complete message to stop the game.
