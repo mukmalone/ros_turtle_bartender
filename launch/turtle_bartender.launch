@@ -1,8 +1,5 @@
 <launch>
     <node name="turtlesim_node" pkg="turtlesim" type="turtlesim_node" />
-    <param name="/object_origin_x" type="double" value="5.0" />
-    <param name="/object_origin_y" type="double" value="8.0" />
-    <param name="/search_step_size" type="double" value="0.5" />
     <node name="random_goal_server" pkg="ros_turtle_bartender" type="random_goal_server" />
     <node name="turtle_dance_party" pkg="ros_turtle_bartender" type="turtle_dance_party" />
     <node name="drink_location_broadcaster" pkg="ros_turtle_bartender" type="drink_location_broadcaster" />
