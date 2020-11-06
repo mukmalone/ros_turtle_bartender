@@ -189,7 +189,7 @@ int main(int argc, char **argv)
 					adaptive_control=abs(vel_msg.angular.z);
 				}
 				
-				vel_msg.linear.x = 2/adaptive_control * sqrt(pow(transformStamped.transform.translation.x,2) +
+				vel_msg.linear.x = 1/adaptive_control * sqrt(pow(transformStamped.transform.translation.x,2) +
 											pow(transformStamped.transform.translation.y,2));
 				turtle_vel.publish(vel_msg);
 
