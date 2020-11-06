@@ -23,7 +23,7 @@ Here is rqt graph of the tf frames being broadcast.
 
 Here on YouTube I quickly go through running the game and the code.
 
-[![IMAGE ALT TEXT](http://img.youtube.com/vi/a16sIjR4Cco/0.jpg)](http://www.youtube.com/watch?v=a16sIjR4Cco "Learning ROS through programming - Turtlesim Hide and Seek")
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/aTRwnKxRvXs/0.jpg)](https://youtu.be/aTRwnKxRvXs "Learning ROS through programming - Turtlesim Hide and Seek")
 
 ## Usage ## 
 
