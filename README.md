@@ -37,9 +37,9 @@ Using the terminal when inside the `~/webserver` directory run `npm install` com
 
 If you do not have nodjs install you can do so by using the command:
 
-`# Using Ubuntu
-curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
-sudo apt-get install -y nodejs`
+`- # Using Ubuntu
+- curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
+- sudo apt-get install -y nodejs`
 
 To start the webserver in the terminal use the command: `npm start` 
 
