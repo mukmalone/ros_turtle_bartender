@@ -49,17 +49,20 @@ Below is a picture of the rqt_graph outlining the nodes and the topics they use 
 
 ![image info](./pictures/rosgraph.png)
 
-### /next_goal_server ###
-- this node is the server for the NextGoal service which calculates the next goal for the turtlesim robot to drive towards as it searches for the ball.  When the next goal is outside of the turtlesim environment it sends a complete message to stop the game.
+### /random_goal_server ###
+- This node is a service server giving the Party Turtles some random dance moves or goals to move to
+
+### /drink_order_server ###
+- This node is a service server connecting to the webserver to get the next customer and drink order for the turtle bartender to fullfill
 
 ### /turtlesim_node ###
 - this is the main node for the turtlesim robot.
 
-### /turtle_mark_target ###
-- this node setups the playing field by drawing a circle at the x,y location specified in the roslaunch file.  When the setup is complete it publishes on the /start_search topic the search can begin.
+### /turtle_dance_party ###
+- This node setups all the Party turtles and moves them around the party using the /random_goal_server.  It broadcasts to the TF the position of each turtle by name.
 
-### /turtle_color_search ###
-- this node subscribes to the /turtle1/color_sensor topic and looks for the r,g,b values to be above 200 signalling it has found the ball.  When the ball is found it will publish a message on the /status topic to signal the search is complete.
+### /drink_location_broadcaster ###
+- This node broadcasts the position of the drink stands.
 
-### /turtle_move ###
-- this node is what gives velocity commands to move the turtlesim robot.  When it reachs a goal it will request the next goal from the next_goal_server until it receives a complete from the server or a complete from the /turtule_color_search.
+### /turtle_bartender ###
+- This node is the bartender control.  When a new order is received from the drink_order_server the bartender moves to the location of the drink broad cast in the TF and then the Party Turtle at the location broadcast in the TF.  When completed it requests a new order.
