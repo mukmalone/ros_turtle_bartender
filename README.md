@@ -61,7 +61,7 @@ Below is a picture of the rqt_graph outlining the nodes and the topics they use 
 - this is the main node for the turtlesim robot.
 
 ### /turtle_dance_party ###
-- This node setups all the Party turtles and moves them around the party using the /random_goal_server.  It broadcasts to the TF the position of each turtle by name.
+- This node sets up all the Party turtles and moves them around the party using the /random_goal_server.  It broadcasts to the TF the position of each turtle by name.
 
 ### /drink_location_broadcaster ###
 - This node broadcasts the position of the drink stands.
