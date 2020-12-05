@@ -35,7 +35,7 @@ In the `ros_turtle_bartender` directory using the `terminal` enter the `webserve
 
 Using the terminal when inside the `~/webserver` directory run `npm install` command to grab all of the node_modules required.  
 
-If you do not have nodjs install you can do so by using the command:
+If you do not have nodjs installed you can do so by using the command:
 
 `- # Using Ubuntu
 - curl -sL https://deb.nodesource.com/setup_15.x | sudo -E bash -
