@@ -150,18 +150,23 @@ include_directories(
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 add_executable(turtle_bartender src/turtle_bartender.cpp)
+add_dependencies(turtle_bartender ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(turtle_bartender ${catkin_LIBRARIES})
 
 add_executable(turtle_dance_party src/turtle_dance_party.cpp)
+add_dependencies(turtle_dance_party ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(turtle_dance_party ${catkin_LIBRARIES})
 
 add_executable(random_goal_server src/random_goal_server.cpp)
+add_dependencies(random_goal_server ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(random_goal_server ${catkin_LIBRARIES})
 
 add_executable(drink_location_broadcaster src/drink_location_broadcaster.cpp)
+add_dependencies(drink_location_broadcaster ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(drink_location_broadcaster ${catkin_LIBRARIES})
 
 add_executable(drink_order_server src/drink_order_server.cpp)
+add_dependencies(drink_order_server ${PROJECT_NAME}_generate_messages_cpp)
 target_link_libraries(drink_order_server ${catkin_LIBRARIES} curl)
 
 ## Specify libraries to link a library or executable target against
